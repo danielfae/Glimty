@@ -1,0 +1,10 @@
+{
+	"production":{
+		"url":"https://glimtybot.herokuapp.com/",
+		"db":"mongodb://heroku_gf1d9q18:qdf9mcri5kr2ru917v9gqc9v0m@ds147777.mlab.com:47777/heroku_gf1d9q18"
+	},
+	"fb":{
+		"appid":"1812094889036209",
+		"appsecret":"09fdd980868e08aa672078ada06fa798"
+	}
+}
