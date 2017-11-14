@@ -367,7 +367,7 @@ function nei_hjelp_meg_Message(recipientId) {
       id: recipientId
     },
     message: {
-      text: 'Skriv noen om hvem, hva og hvor mye du tenker å kjøpe for 💬 Jo mer informajon, jo raskere og mer effektivt kan assistenten din hjelpe deg! 🙂 (Alder, kjønn, anledning, interesser, budsjett...) Alt hjelper slik at assistenten kan finne frem til den beste gaven til julaften 🎅 psst...ikke glem farsdag 👨‍👧‍👦 Sondag 12 November'
+      text: 'Skriv noen om hvem, hva og hvor mye du tenker å kjøpe for 💬 Jo mer informajon, jo raskere og mer effektivt kan assistenten din hjelpe deg! 🙂 (Alder, kjønn, anledning, interesser, budsjett...) Alt hjelper slik at assistenten kan finne frem til den beste gaven til julaften 🎅'
     }
   };
 
