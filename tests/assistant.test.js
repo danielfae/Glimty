@@ -124,6 +124,7 @@ describe('assistant conversation', () => {
     });
     const chosen = assistant.handle({ sessionId: id, locale: 'en', payload: 'choose:bernadotte-carafe' });
     assert.equal(chosen.session.selectedGiftId, 'bernadotte-carafe');
+    assert.ok(chosen.messages[0].buttons.some((btn) => btn.payload === 'open:bernadotte-carafe'));
     assistant.handle({ sessionId: id, locale: 'en', payload: 'intent:wrapping' });
     assistant.handle({ sessionId: id, locale: 'en', payload: 'wrap:recipient' });
     const wrapped = assistant.handle({ sessionId: id, locale: 'en', message: 'Happy anniversary — table for two is on me.' });

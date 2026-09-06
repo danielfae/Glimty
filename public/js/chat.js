@@ -189,8 +189,13 @@
       const button = event.target.closest('[data-payload]');
       if (!button || !root.contains(button)) return;
       event.preventDefault();
-      const title = button.textContent.trim();
       const payload = button.getAttribute('data-payload');
+      if (payload && payload.startsWith('open:')) {
+        const giftId = payload.slice(5);
+        window.location.href = `/gift/${encodeURIComponent(giftId)}?lang=${currentLocale()}`;
+        return;
+      }
+      const title = button.textContent.trim();
       const last = document.createElement('article');
       last.className = 'msg user';
       last.textContent = title;
