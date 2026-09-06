@@ -1,31 +1,25 @@
 {
-  "name": "messenger_testbot",
-  "version": "1.0.0",
-  "description": "A test bot for facebook messenger",
+  "name": "glimty",
+  "version": "2.0.0",
+  "description": "Glimty — a personal gift assistant on the web",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "keywords": [
+    "gifts",
     "chatbot",
-    "tutorial",
-    "test"
+    "personal-assistant"
   ],
-  "author": "Canned Head",
+  "author": "Glimty",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "compression": "^1.6.2",
-    "express": "^4.14.0",
-    "fb-bot-framework": "^0.2.1",
-    "http": "0.0.0",
-    "method-override": "^2.3.6",
-    "mongoose": "^4.6.3",
-    "muler": "^1.1.1",
-    "multer": "^1.2.0",
-    "request": "^2.72.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.11.0"
+    "compression": "^1.7.5",
+    "express": "^4.21.2"
   }
 }

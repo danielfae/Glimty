@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glimty — every time you need a gift</title>
+  <meta name="description" content="Talk with Glimty’s own gift assistant. Find, wrap, and plan presents without leaving the site.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="logo" href="/"><span class="mark">G</span> Glimty</a>
+      <nav>
+        <a class="hide-sm" href="#how">How it works</a>
+        <a class="hide-sm" href="#gifts">Gifts</a>
+        <a class="hide-sm" href="#faq">FAQ</a>
+        <a class="btn btn-primary" href="/assistant">Talk to Glimty</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">Personal shopping, on the web</p>
+        <h1>Glimty</h1>
+        <p class="lede">Hver gang du trenger en gave</p>
+        <p>Talk with an assistant who already knows how to shop for people. The easiest way to find, wrap, and remember a gift — no Messenger, no handoff to a form.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/assistant">I need a gift</a>
+          <button class="btn btn-ghost" type="button" data-open-chat>Say hei to the assistant</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <h2>How it works</h2>
+      <p class="intro">You describe the person. Glimty’s assistant builds a brief, then stays with you through wrapping and reminders. Assistants are here whenever you are.</p>
+      <div class="steps">
+        <article class="card">
+          <div class="num">1</div>
+          <h3>Tell us who it’s for</h3>
+          <p>Partner, parent, colleague, a child — plus the occasion and a budget you can live with.</p>
+        </article>
+        <article class="card">
+          <div class="num">2</div>
+          <h3>Get three real options</h3>
+          <p>Not a dump of the catalog. Three gifts that fit the brief, with a reason for each.</p>
+        </article>
+        <article class="card">
+          <div class="num">3</div>
+          <h3>Wrap, send, or remember</h3>
+          <p>Add a card, send it to them, or drop the date into your planner so the next gift is not a scramble.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Glimty finds it for you</h2>
+      <p class="intro">Clothes, home, flowers, nights out, quiet tech, and the small gifts people actually keep.</p>
+      <div class="cats" id="categories"></div>
+    </section>
+
+    <section class="section" id="gifts">
+      <h2>From the shop</h2>
+      <p class="intro">A short edit of what the assistant likes to recommend first.</p>
+      <div class="cards" id="featured"></div>
+    </section>
+
+    <section class="section">
+      <div class="split">
+        <div>
+          <p class="eyebrow">The assistant</p>
+          <h2>Your own shopper, not a script that restarts</h2>
+          <p>The old Glimty lived in Facebook Messenger and repeated the same welcome every time someone typed “hi.” This one keeps the brief, understands a sentence like “gift for my dad, birthday, $50,” and only asks for what’s missing.</p>
+          <p>Need wrapping or a reminder list instead? Say so. The same assistant handles all three.</p>
+          <a class="btn btn-primary" href="/assistant">Open the full assistant</a>
+        </div>
+        <div class="card" style="color: var(--ink);">
+          <h3>Try a first line</h3>
+          <p>“I need a gift for my girlfriend. Anniversary. Around $160. She loves dinner and flowers.”</p>
+          <p style="margin-top:14px">Or start with wrapping, or add “Mom, birthday, June 12” to the planner.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details open>
+          <summary>Is this still on Facebook Messenger?</summary>
+          <p>No. Glimty now lives on this site. The assistant is ours — it does not send you to Messenger, Typeform, or a third-party inbox.</p>
+        </details>
+        <details>
+          <summary>Can I type instead of tapping buttons?</summary>
+          <p>Yes. Buttons are shortcuts. A full sentence is usually enough for the assistant to skip ahead.</p>
+        </details>
+        <details>
+          <summary>Do you wrap and send gifts?</summary>
+          <p>The assistant takes the card line and where it should go. In this preview, checkout is simulated so you can walk the whole path.</p>
+        </details>
+        <details>
+          <summary>What about the gift planner?</summary>
+          <p>Add people and dates as you think of them. The list stays with your session so the next gift is already named.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      <div>Glimty — every time you need a gift.</div>
+      <div>Talk on the web. We stay with you until the gift is chosen.</div>
+    </footer>
+  </div>
+
+  <aside class="chat-bubble" id="nudge">
+    Looking for a gift? The assistant can help you now.
+    <div><button type="button" data-open-chat>See how it works</button></div>
+  </aside>
+  <button class="chat-launch" type="button" data-open-chat aria-label="Open Glimty assistant">G</button>
+
+  <section class="widget" id="chat-widget" hidden>
+    <div class="chat-head">
+      <div>
+        <strong>Glimty</strong>
+        <span>Personal gift assistant</span>
+      </div>
+      <button class="icon-btn" type="button" data-close-chat aria-label="Close chat">×</button>
+    </div>
+    <div class="brief" data-brief></div>
+    <div class="transcript" data-transcript></div>
+    <form class="composer" data-composer>
+      <label class="visually-hidden" for="widget-input">Message</label>
+      <input id="widget-input" name="message" autocomplete="off" placeholder="Who is the gift for?">
+      <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+  </section>
+
+  <script src="/js/chat.js"></script>
+  <script src="/js/marketing.js"></script>
+</body>
+</html>
