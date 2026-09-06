@@ -60,15 +60,18 @@
   }
 
   function giftCard(gift) {
+    const photo = gift.image
+      ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="">`
+      : '<span class="swatch" aria-hidden="true"></span>';
     return `
-      <button type="button" class="gift-pick" data-payload="choose:${escapeHtml(gift.id)}">
-        <span class="swatch" aria-hidden="true"></span>
+      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}" data-payload="choose:${escapeHtml(gift.id)}">
+        ${photo}
         <span>
           <b>${escapeHtml(gift.name)}</b>
           <small>${escapeHtml(gift.why || gift.blurb)}</small>
         </span>
         <span class="price">$${gift.price}</span>
-      </button>
+      </a>
     `;
   }
 
@@ -130,6 +133,7 @@
     root.addEventListener('click', (event) => {
       const button = event.target.closest('[data-payload]');
       if (!button || !root.contains(button)) return;
+      event.preventDefault();
       const title = button.textContent.trim();
       const payload = button.getAttribute('data-payload');
       const last = document.createElement('article');

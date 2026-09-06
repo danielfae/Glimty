@@ -5,6 +5,7 @@ const express = require('express');
 const compression = require('compression');
 const assistant = require('./lib/assistant');
 const catalog = require('./lib/catalog');
+const pages = require('./lib/pages');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,12 @@ app.get('/api/catalog', (_req, res) => {
     gifts: catalog.listGifts(),
     categories: catalog.listCategories()
   });
+});
+
+app.get('/api/inventory/:id', (req, res) => {
+  const item = catalog.getGift(req.params.id);
+  if (!item) return res.status(404).json({ error: 'Gift not found' });
+  res.json({ gift: item });
 });
 
 app.post('/api/chat', (req, res) => {
@@ -47,6 +54,22 @@ app.post('/api/chat', (req, res) => {
 
 app.get('/assistant', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'assistant.html'));
+});
+
+app.get('/shop', (_req, res) => {
+  res.type('html').send(pages.shopPage());
+});
+
+app.get('/shop/:category', (req, res) => {
+  const known = catalog.listCategories().some((cat) => cat.id === req.params.category);
+  if (!known) return res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+  res.type('html').send(pages.shopPage(req.params.category));
+});
+
+app.get('/gift/:id', (req, res) => {
+  const html = pages.productPage(req.params.id);
+  if (!html) return res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+  res.type('html').send(html);
 });
 
 app.use((req, res) => {

@@ -29,7 +29,7 @@ describe('catalog.recommend', () => {
       interests: ['experience', 'food']
     }, 3);
     assert.ok(picks.length === 3);
-    assert.ok(picks.some((gift) => gift.id === 'dinner-voucher' || gift.id === 'cabin-night'));
+    assert.ok(picks.some((gift) => /bernadotte|sky-/.test(gift.id)));
   });
 
   it('keeps modest picks under $40', () => {
@@ -107,8 +107,8 @@ describe('assistant conversation', () => {
       sessionId: id,
       message: 'Gift for my girlfriend, anniversary, $160, dinner'
     });
-    const chosen = assistant.handle({ sessionId: id, payload: 'choose:dinner-voucher' });
-    assert.equal(chosen.session.selectedGiftId, 'dinner-voucher');
+    const chosen = assistant.handle({ sessionId: id, payload: 'choose:bernadotte-carafe' });
+    assert.equal(chosen.session.selectedGiftId, 'bernadotte-carafe');
     assistant.handle({ sessionId: id, payload: 'intent:wrapping' });
     assistant.handle({ sessionId: id, payload: 'wrap:recipient' });
     const wrapped = assistant.handle({ sessionId: id, message: 'Happy anniversary — table for two is on me.' });

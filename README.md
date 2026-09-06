@@ -6,7 +6,8 @@ A web gift shop with its own personal assistant. Glimty used to live in Facebook
 
 - Tell the assistant who the gift is for, or tap a path: find a gift, wrap one, or keep a planner.
 - Type a full sentence (`gift for my dad, birthday, $50, he loves gardening`) and skip the questions already answered.
-- Get three gifts that fit the brief, wrap a chosen one, or store a date for later.
+- Browse the shop: 36 gifts photographed from the You Brands catalog at you.no, grouped by drinkware, travel, bags, home, table, and outdoors.
+- Open a product page for stock, colors, and the original catalog description.
 
 ## Run it
 
@@ -27,6 +28,8 @@ npm test
 | ------ | --- | ------- |
 | GET | `/` | Marketing page |
 | GET | `/assistant` | Full-page assistant |
+| GET | `/shop` | Inventory by category |
+| GET | `/gift/:id` | Individual gift page |
 | GET | `/api/health` | Liveness |
 | GET | `/api/catalog` | Gifts and categories |
 | POST | `/api/chat` | `{ sessionId?, message?, payload? }` |
@@ -37,7 +40,9 @@ Sessions stay in memory on the server. The browser keeps the session id in `loca
 
 ```
 lib/assistant.js   conversation, brief, wrapping, planner
-lib/catalog.js     gift list and scoring
+lib/inventory.js   36 You Brands gifts, stock, categories
+lib/catalog.js     assistant view of the inventory
+lib/pages.js       shop and product HTML
 lib/sessions.js    in-memory sessions
 public/            marketing page, assistant UI, styles
 server.js          Express app

@@ -73,7 +73,7 @@ button, input { font: inherit; }
 
 nav { display: flex; gap: 22px; align-items: center; }
 nav a { text-decoration: none; color: var(--ink-soft); font-size: 16px; }
-nav a:hover { color: var(--ink); }
+nav a:hover, nav a.is-on { color: var(--ink); }
 
 .btn {
   display: inline-flex;
@@ -192,14 +192,35 @@ nav a:hover { color: var(--ink); }
 .gift {
   overflow: hidden;
   padding: 0;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
-.gift-art {
-  height: 150px;
-  background: linear-gradient(135deg, var(--blush), var(--coral));
+.gift-photo, .product-photo {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #efe4da;
+  display: block;
 }
-.gift-art[data-tone="2"] { background: linear-gradient(135deg, #ead7c8, #8a4a3a); }
-.gift-art[data-tone="3"] { background: linear-gradient(135deg, #f6e3c6, #c44b36); }
-.gift body, .gift .meta { padding: 18px 20px 22px; }
+.product-photo { height: auto; min-height: 280px; border-radius: 20px; }
+.gift .meta { padding: 18px 20px 22px; }
+.shop-filters { margin-bottom: 22px; }
+.chip.is-on { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.product-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  align-items: start;
+}
+.product h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 5vw, 48px);
+  margin: 0 0 8px;
+}
+.product .lede { font-size: 28px; color: var(--coral-deep); }
+.source-note { color: var(--ink-soft); font-size: 14px; }
+.cat { text-decoration: none; color: inherit; }
 .price { font-weight: 700; color: var(--coral-deep); }
 
 .split {
@@ -365,6 +386,8 @@ footer {
   margin-top: 10px;
 }
 .gift-pick {
+  text-decoration: none;
+  color: inherit;
   display: grid;
   grid-template-columns: 56px 1fr auto;
   gap: 10px;
@@ -380,6 +403,7 @@ footer {
 .gift-pick:hover { border-color: var(--coral); }
 .swatch {
   width: 56px; height: 52px; border-radius: 10px;
+  object-fit: cover;
   background: linear-gradient(135deg, var(--blush), var(--coral));
 }
 .gift-pick b { display: block; font-size: 15px; }
@@ -423,7 +447,7 @@ footer {
 
 @media (max-width: 860px) {
   nav .hide-sm { display: none; }
-  .steps, .cats, .cards, .split { grid-template-columns: 1fr; }
+  .steps, .cats, .cards, .split, .product-grid { grid-template-columns: 1fr; }
   .split { padding: 28px 22px; }
   .hero { min-height: 70vh; border-radius: 24px; }
   .site-header { width: min(1120px, calc(100% - 24px)); }

@@ -57,8 +57,26 @@ describe('http api', () => {
   it('returns the catalog', async () => {
     const res = await request('GET', '/api/catalog');
     assert.equal(res.status, 200);
-    assert.ok(res.body.gifts.length > 8);
+    assert.ok(res.body.gifts.length >= 25);
+    assert.ok(res.body.gifts.every((gift) => gift.image && gift.name && gift.price > 0));
     assert.ok(res.body.categories.length >= 5);
+  });
+
+  it('serves the shop and a product page with the you.no photo', async () => {
+    const shop = await request('GET', '/shop');
+    assert.equal(shop.status, 200);
+    assert.match(String(shop.body), /The shop/);
+    assert.match(String(shop.body), /Drinkware/);
+
+    const drinkware = await request('GET', '/shop/drinkware');
+    assert.equal(drinkware.status, 200);
+    assert.match(String(drinkware.body), /Almere/);
+
+    const product = await request('GET', '/gift/almere');
+    assert.equal(product.status, 200);
+    assert.match(String(product.body), /Almere recycled steel bottle/);
+    assert.match(String(product.body), /\/images\/gifts\/5307-almere\.jpg/);
+    assert.match(String(product.body), /you\.no/);
   });
 
   it('opens a chat session and continues it', async () => {
