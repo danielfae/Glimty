@@ -40,18 +40,26 @@ describe('http api', () => {
     await new Promise((resolve) => server.close(resolve));
   });
 
-  it('serves the marketing page', async () => {
+  it('serves the marketing page in Norwegian by default', async () => {
     const res = await request('GET', '/');
     assert.equal(res.status, 200);
     assert.match(String(res.body), /Glimty/);
-    assert.match(String(res.body), /gift assistant/i);
+    assert.match(String(res.body), /gaveassistent/i);
+    assert.match(String(res.body), /lang="nb"/);
     assert.doesNotMatch(String(res.body), /messenger.com|Facebook Webhook/i);
+  });
+
+  it('serves the marketing page in English when asked', async () => {
+    const res = await request('GET', '/?lang=en');
+    assert.equal(res.status, 200);
+    assert.match(String(res.body), /gift assistant/i);
+    assert.match(String(res.body), /lang="en"/);
   });
 
   it('serves the full assistant page', async () => {
     const res = await request('GET', '/assistant');
     assert.equal(res.status, 200);
-    assert.match(String(res.body), /gift assistant/i);
+    assert.match(String(res.body), /gaveassistent/i);
   });
 
   it('returns the catalog', async () => {
@@ -65,8 +73,8 @@ describe('http api', () => {
   it('serves the shop and a product page with the you.no photo', async () => {
     const shop = await request('GET', '/shop');
     assert.equal(shop.status, 200);
-    assert.match(String(shop.body), /The shop/);
-    assert.match(String(shop.body), /Drinkware/);
+    assert.match(String(shop.body), /Butikken/);
+    assert.match(String(shop.body), /Drikke/);
 
     const drinkware = await request('GET', '/shop/drinkware');
     assert.equal(drinkware.status, 200);
@@ -74,7 +82,7 @@ describe('http api', () => {
 
     const product = await request('GET', '/gift/almere');
     assert.equal(product.status, 200);
-    assert.match(String(product.body), /Almere recycled steel bottle/);
+    assert.match(String(product.body), /Almere flaske i resirkulert stål/);
     assert.match(String(product.body), /\/images\/gifts\/5307-almere\.jpg/);
     assert.match(String(product.body), /you\.no/);
   });
