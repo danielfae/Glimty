@@ -1,26 +1,11 @@
 (() => {
-  const RECIPIENTS = {
-    partner: 'Partner',
-    parent: 'Parent',
-    friend: 'Friend',
-    colleague: 'Colleague',
-    kid: 'A child',
-    other: 'Someone else'
-  };
-  const OCCASIONS = {
-    birthday: 'Birthday',
-    anniversary: 'Anniversary',
-    holiday: 'Holiday',
-    housewarming: 'Housewarming',
-    'thank-you': 'Thank you',
-    'just-because': 'Just because'
-  };
-  const BUDGETS = {
-    modest: 'Under $40',
-    mid: '$40–80',
-    generous: '$80–150',
-    open: '$150+'
-  };
+  function currentLocale() {
+    return window.GLIMTY?.locale || 'nb';
+  }
+
+  function ui() {
+    return window.GLIMTY?.ui || {};
+  }
 
   function escapeHtml(value) {
     return String(value)
@@ -30,32 +15,69 @@
       .replace(/"/g, '&quot;');
   }
 
+  function setLocaleCookie(locale) {
+    document.cookie = `glimty_lang=${locale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    if (window.GLIMTY) window.GLIMTY.locale = locale;
+    document.documentElement.lang = locale === 'en' ? 'en' : 'nb';
+  }
+
   async function apiChat(body) {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ locale: currentLocale(), ...body })
     });
     if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Request failed' }));
-      throw new Error(err.error || 'Request failed');
+      const err = await res.json().catch(() => ({ error: ui().chat_error || 'Request failed' }));
+      throw new Error(err.error || ui().chat_error || 'Request failed');
     }
     return res.json();
   }
 
   function renderBrief(node, session) {
     if (!node || !session) return;
+    const labels = ui();
     const tags = [];
-    if (session.brief.recipient) tags.push(RECIPIENTS[session.brief.recipient] || session.brief.recipient);
-    if (session.brief.occasion) tags.push(OCCASIONS[session.brief.occasion] || session.brief.occasion);
-    if (session.brief.budget) tags.push(BUDGETS[session.brief.budget] || session.brief.budget);
-    const interestLabels = {
-      style: 'Style', home: 'Home', food: 'Food & drink', outdoors: 'Outdoors',
-      music: 'Music', books: 'Books', wellness: 'Wellness', experience: 'Experiences',
-      flowers: 'Flowers'
+    const recipients = {
+      partner: labels.recipient_partner,
+      parent: labels.recipient_parent,
+      friend: labels.recipient_friend,
+      colleague: labels.recipient_colleague,
+      kid: labels.recipient_kid,
+      other: labels.recipient_other
     };
-    (session.brief.interests || []).forEach((id) => tags.push(interestLabels[id] || id));
-    if (session.planner?.length) tags.push(`${session.planner.length} planned`);
+    const occasions = {
+      birthday: labels.occasion_birthday,
+      anniversary: labels.occasion_anniversary,
+      holiday: labels.occasion_holiday,
+      housewarming: labels.occasion_housewarming,
+      'thank-you': labels.occasion_thank_you,
+      'just-because': labels.occasion_just_because
+    };
+    const budgets = {
+      modest: labels.budget_modest,
+      mid: labels.budget_mid,
+      generous: labels.budget_generous,
+      open: labels.budget_open
+    };
+    const interests = {
+      style: labels.interest_style,
+      home: labels.interest_home,
+      food: labels.interest_food,
+      outdoors: labels.interest_outdoors,
+      music: labels.interest_music,
+      books: labels.interest_books,
+      wellness: labels.interest_wellness,
+      experience: labels.interest_experience,
+      flowers: labels.interest_flowers
+    };
+    if (session.brief.recipient) tags.push(recipients[session.brief.recipient] || session.brief.recipient);
+    if (session.brief.occasion) tags.push(occasions[session.brief.occasion] || session.brief.occasion);
+    if (session.brief.budget) tags.push(budgets[session.brief.budget] || session.brief.budget);
+    (session.brief.interests || []).forEach((id) => tags.push(interests[id] || id));
+    if (session.planner?.length) {
+      tags.push((labels.planned_count || '{count}').replace('{count}', session.planner.length));
+    }
     node.innerHTML = tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
   }
 
@@ -64,7 +86,7 @@
       ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="">`
       : '<span class="swatch" aria-hidden="true"></span>';
     return `
-      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}" data-payload="choose:${escapeHtml(gift.id)}">
+      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="choose:${escapeHtml(gift.id)}">
         ${photo}
         <span>
           <b>${escapeHtml(gift.name)}</b>
@@ -89,6 +111,21 @@
     `;
   }
 
+  function applyUi(root, pack) {
+    if (!pack) return;
+    if (window.GLIMTY) window.GLIMTY.ui = { ...window.GLIMTY.ui, ...pack };
+    const input = root.querySelector('input[name="message"]');
+    if (input && pack.assistant_placeholder) {
+      input.placeholder = pack.widget_placeholder || pack.assistant_placeholder;
+    }
+    const send = root.querySelector('.composer button[type="submit"]');
+    if (send && pack.assistant_send) send.textContent = pack.assistant_send;
+    root.querySelectorAll('.lang-switch a').forEach((link) => {
+      const lang = new URL(link.href, window.location.origin).searchParams.get('lang');
+      link.classList.toggle('is-on', lang === currentLocale());
+    });
+  }
+
   function mount(root, options = {}) {
     if (!root) return null;
     const transcript = root.querySelector('[data-transcript]');
@@ -99,7 +136,8 @@
     let sessionId = window.localStorage.getItem(storageKey) || '';
     let sending = false;
 
-    function append(messages, asUserText) {
+    function append(messages, asUserText, replace) {
+      if (replace) transcript.innerHTML = '';
       if (asUserText) {
         transcript.insertAdjacentHTML('beforeend', messageHtml({ role: 'user', text: asUserText }));
       }
@@ -111,19 +149,21 @@
       else transcript.scrollTop = transcript.scrollHeight;
     }
 
-    async function send({ message, payload, silent }) {
+    async function send({ message, payload, silent, replace }) {
       if (sending) return;
       sending = true;
       try {
         const result = await apiChat({ sessionId, message, payload });
         sessionId = result.session.id;
         window.localStorage.setItem(storageKey, sessionId);
+        if (result.session.locale) setLocaleCookie(result.session.locale);
+        if (result.ui) applyUi(root, result.ui);
         renderBrief(brief, result.session);
-        if (!silent) append(result.messages, message && !payload ? message : '');
-        else if (result.messages.length) append(result.messages);
+        if (!silent) append(result.messages, message && !payload ? message : '', replace);
+        else if (result.messages.length) append(result.messages, '', replace);
         return result;
       } catch (err) {
-        append([{ role: 'assistant', text: err.message || 'I could not reach the assistant just then.' }]);
+        append([{ role: 'assistant', text: err.message || ui().chat_error || 'Error' }]);
       } finally {
         sending = false;
         input?.focus();
@@ -131,6 +171,21 @@
     }
 
     root.addEventListener('click', (event) => {
+      const langLink = event.target.closest('.lang-switch a');
+      if (langLink && root.contains(langLink)) {
+        event.preventDefault();
+        const next = new URL(langLink.href, window.location.origin).searchParams.get('lang') || 'nb';
+        if (next === currentLocale() && !event.metaKey) return;
+        setLocaleCookie(next);
+        const title = next === 'en' ? 'English' : 'Norsk';
+        const last = document.createElement('article');
+        last.className = 'msg user';
+        last.textContent = title;
+        transcript.appendChild(last);
+        send({ payload: `locale:${next}` });
+        return;
+      }
+
       const button = event.target.closest('[data-payload]');
       if (!button || !root.contains(button)) return;
       event.preventDefault();
@@ -151,8 +206,11 @@
       send({ message });
     });
 
-    send({ silent: true });
-    return { send, reset: () => { window.localStorage.removeItem(storageKey); sessionId = ''; } };
+    send({ silent: true, replace: true });
+    return {
+      send,
+      reset: () => { window.localStorage.removeItem(storageKey); sessionId = ''; }
+    };
   }
 
   window.GlimtyChat = { mount, apiChat };

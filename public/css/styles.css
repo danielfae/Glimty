@@ -75,6 +75,34 @@ nav { display: flex; gap: 22px; align-items: center; }
 nav a { text-decoration: none; color: var(--ink-soft); font-size: 16px; }
 nav a:hover, nav a.is-on { color: var(--ink); }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+}
+.lang-switch a {
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+}
+.lang-switch a.is-on {
+  background: var(--ink);
+  color: var(--cream);
+}
+.chat-head-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

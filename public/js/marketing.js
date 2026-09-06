@@ -3,6 +3,7 @@
   const nudge = document.getElementById('nudge');
   const featured = document.getElementById('featured');
   const categories = document.getElementById('categories');
+  const locale = window.GLIMTY?.locale || 'nb';
 
   const opened = { current: false };
   let chat;
@@ -31,17 +32,18 @@
     el.addEventListener('click', closeChat);
   });
 
-  fetch('/api/catalog')
+  fetch(`/api/catalog?lang=${encodeURIComponent(locale)}`)
     .then((res) => res.json())
     .then((data) => {
+      const copy = window.GLIMTY?.ui || {};
       if (categories) {
         categories.innerHTML = data.categories.map((cat) => (
-          `<a class="cat" href="/shop/${cat.id}"><span>${cat.count} gifts · ${cat.hint}</span><strong>${cat.label}</strong></a>`
+          `<a class="cat" href="/shop/${cat.id}?lang=${locale}"><span>${(copy.home_cat_gifts || '{count} · {hint}').replace('{count}', cat.count).replace('{hint}', cat.hint)}</span><strong>${cat.label}</strong></a>`
         )).join('');
       }
       if (featured) {
         featured.innerHTML = data.gifts.slice(0, 6).map((gift) => (
-          `<a class="card gift" href="/gift/${gift.id}">
+          `<a class="card gift" href="/gift/${gift.id}?lang=${locale}">
             <img class="gift-photo" src="${gift.image}" alt="">
             <div class="meta">
               <h3>${gift.name}</h3>
