@@ -96,6 +96,8 @@ describe('assistant conversation', () => {
     assert.equal(result.session.planner.length, 1);
     assert.equal(result.session.planner[0].who, 'Mom');
     assert.match(result.session.planner[0].when, /June 12/);
+    assert.equal(result.session.brief.budget, null);
+    assert.equal(result.session.brief.recipient, null);
   });
 
   it('chooses a gift and can take a wrapping note', () => {

@@ -9,6 +9,7 @@
 
   function openChat() {
     if (nudge) nudge.hidden = true;
+    document.querySelectorAll('.chat-launch').forEach((el) => { el.hidden = true; });
     if (!widget) return;
     widget.hidden = false;
     if (!opened.current) {
@@ -20,6 +21,7 @@
 
   function closeChat() {
     if (widget) widget.hidden = true;
+    document.querySelectorAll('.chat-launch').forEach((el) => { el.hidden = false; });
   }
 
   document.querySelectorAll('[data-open-chat]').forEach((el) => {

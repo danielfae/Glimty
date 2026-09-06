@@ -49,7 +49,12 @@
     if (session.brief.recipient) tags.push(RECIPIENTS[session.brief.recipient] || session.brief.recipient);
     if (session.brief.occasion) tags.push(OCCASIONS[session.brief.occasion] || session.brief.occasion);
     if (session.brief.budget) tags.push(BUDGETS[session.brief.budget] || session.brief.budget);
-    (session.brief.interests || []).forEach((id) => tags.push(id));
+    const interestLabels = {
+      style: 'Style', home: 'Home', food: 'Food & drink', outdoors: 'Outdoors',
+      music: 'Music', books: 'Books', wellness: 'Wellness', experience: 'Experiences',
+      flowers: 'Flowers'
+    };
+    (session.brief.interests || []).forEach((id) => tags.push(interestLabels[id] || id));
     if (session.planner?.length) tags.push(`${session.planner.length} planned`);
     node.innerHTML = tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
   }
@@ -98,7 +103,9 @@
       messages.forEach((msg) => {
         transcript.insertAdjacentHTML('beforeend', messageHtml(msg));
       });
-      transcript.scrollTop = transcript.scrollHeight;
+      const latest = transcript.lastElementChild;
+      if (latest) latest.scrollIntoView({ block: 'nearest' });
+      else transcript.scrollTop = transcript.scrollHeight;
     }
 
     async function send({ message, payload, silent }) {
