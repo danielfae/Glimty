@@ -39,6 +39,8 @@ Sessions stay in memory on the server. The browser keeps the session id in `loca
 ## Layout
 
 ```
+PRODUCT.md         durable product facts for design work
+DESIGN.md          incumbent visual system (cream, coral, Fraunces)
 lib/assistant.js   conversation, brief, wrapping, planner
 lib/i18n.js        Norwegian default, English second language
 lib/locales/       product copy in Norwegian
@@ -49,4 +51,5 @@ lib/sessions.js    in-memory sessions
 public/            styles and client scripts
 server.js          Express app
 tests/             assistant and HTTP tests
+.cursor/skills/impeccable   Impeccable design skill for this repo
 ```

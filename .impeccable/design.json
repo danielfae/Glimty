@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-12T22:35:00.000Z",
+  "title": "Design System: Glimty",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "neutral", "displayName": "Shop ink", "canonical": "#2a1810", "tonalRamp": ["#1a0e0a", "#2a1810", "#3d241c", "#5a4036", "#8a6a5c", "#c4a898", "#ead7c8", "#fbf4ec"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft ink", "canonical": "#5a4036", "tonalRamp": ["#2a1810", "#3d241c", "#5a4036", "#7a5a4c", "#a88878", "#c4a898", "#ead7c8", "#fbf4ec"] },
+      "cream": { "role": "neutral", "displayName": "Cream field", "canonical": "#fbf4ec", "tonalRamp": ["#8a6a5c", "#c4a898", "#ead7c8", "#f3e6d8", "#f7eee4", "#fbf4ec", "#fff8f2", "#fffdfb"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#fff8f2", "tonalRamp": ["#ead7c8", "#f3e6d8", "#f7eee4", "#fbf4ec", "#fff8f2", "#fffaf6", "#fffdfb", "#ffffff"] },
+      "blush": { "role": "primary", "displayName": "Blush", "canonical": "#f3c6b4", "tonalRamp": ["#c44b36", "#e36a4a", "#ee7a55", "#f08a6b", "#f3c6b4", "#f7d8cc", "#fbe8e0", "#fff8f2"] },
+      "coral": { "role": "primary", "displayName": "Coral enamel", "canonical": "#e36a4a", "tonalRamp": ["#8a2a1c", "#c44b36", "#d94c5a", "#e36a4a", "#ee7a55", "#f08a6b", "#f3c6b4", "#fbe8e0"] },
+      "coral-deep": { "role": "primary", "displayName": "Deep coral", "canonical": "#c44b36", "tonalRamp": ["#6a1c14", "#8a2a1c", "#c44b36", "#d94c5a", "#e36a4a", "#ee7a55", "#f3c6b4", "#fbe8e0"] },
+      "sand": { "role": "neutral", "displayName": "Sand", "canonical": "#ead7c8", "tonalRamp": ["#8a6a5c", "#c4a898", "#d4c0b0", "#ead7c8", "#f3e6d8", "#f7eee4", "#fbf4ec", "#fff8f2"] },
+      "line": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(42, 24, 16, 0.12)", "tonalRamp": ["rgba(42,24,16,0.28)", "rgba(42,24,16,0.18)", "rgba(42,24,16,0.12)", "rgba(42,24,16,0.08)", "rgba(42,24,16,0.06)", "rgba(42,24,16,0.04)", "#ead7c8", "#fbf4ec"] },
+      "on-ink": { "role": "neutral", "displayName": "On ink", "canonical": "#fbf4ec", "tonalRamp": ["#ead7c8", "#f3e6d8", "#fbf4ec", "#fff8f2", "#fffaf6", "#fffdfb", "#ffffff", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Home wordmark hero only." },
+      "headline": { "displayName": "Headline", "purpose": "Section and product titles." },
+      "title": { "displayName": "Title", "purpose": "Card and category names." },
+      "body": { "displayName": "Body", "purpose": "Reading copy at 18px." },
+      "label": { "displayName": "Label", "purpose": "Language switch and compact meta. Never a kicker above a heading." }
+    },
+    "shadows": [
+      { "name": "resting-paper", "value": "0 18px 50px rgba(42, 24, 16, 0.12)", "purpose": "Cards, chat widget, launch control." },
+      { "name": "lift", "value": "0 10px 28px rgba(42, 24, 16, 0.14)", "purpose": "Primary button hover." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Lift and color transitions on controls." }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "860px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Coral enamel pill for the main next step.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Jeg trenger en gave</button>",
+      "css": ".ds-btn-primary { background: var(--coral, #e36a4a); color: #fff; border: 0; border-radius: 999px; padding: 12px 20px; font: 600 18px 'Source Sans 3', sans-serif; cursor: pointer; transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), background 160ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary:hover { background: var(--coral-deep, #c44b36); transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 3px solid #c44b36; outline-offset: 3px; }"
+    },
+    {
+      "name": "Dark Button",
+      "kind": "button",
+      "refersTo": "button-dark",
+      "description": "Ink pill for secondary commitments.",
+      "html": "<button class=\"ds-btn-dark\" type=\"button\">Start på nytt</button>",
+      "css": ".ds-btn-dark { background: #2a1810; color: #fbf4ec; border: 0; border-radius: 999px; padding: 12px 20px; font: 600 18px 'Source Sans 3', sans-serif; cursor: pointer; } .ds-btn-dark:focus-visible { outline: 3px solid #c44b36; outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Shop filter and chat reply, ink when selected.",
+      "html": "<button class=\"ds-chip\" type=\"button\">Alle 36</button>",
+      "css": ".ds-chip { border: 1px solid rgba(42,24,16,0.12); background: #fff; color: #2a1810; border-radius: 12px; padding: 8px 12px; font: 600 16px 'Source Sans 3', sans-serif; cursor: pointer; } .ds-chip:hover { border-color: #e36a4a; background: #fff8f2; } .ds-chip.is-on { background: #2a1810; color: #fbf4ec; border-color: #2a1810; }"
+    },
+    {
+      "name": "Paper Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Cream-field paper used for steps, gifts, and FAQ.",
+      "html": "<article class=\"ds-card\"><h3>Fortell hvem det er til</h3><p>Kjæreste, forelder, kollega — pluss anledningen.</p></article>",
+      "css": ".ds-card { background: #fff8f2; border: 1px solid rgba(42,24,16,0.12); border-radius: 22px; padding: 22px; box-shadow: 0 18px 50px rgba(42,24,16,0.12); color: #2a1810; } .ds-card h3 { font: 600 26px Fraunces, Georgia, serif; margin: 8px 0; } .ds-card p { margin: 0; color: #5a4036; }"
+    },
+    {
+      "name": "Composer Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Pill field on cream, coral caret and focus.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Fortell hvem det er til\">",
+      "css": ".ds-input { width: 100%; border: 1px solid rgba(42,24,16,0.12); border-radius: 999px; padding: 12px 16px; background: #fbf4ec; color: #2a1810; caret-color: #c44b36; font: 400 18px 'Source Sans 3', sans-serif; } .ds-input:focus-visible { outline: 3px solid #c44b36; outline-offset: 3px; }"
+    },
+    {
+      "name": "Language Switch",
+      "kind": "nav",
+      "refersTo": "chip-on",
+      "description": "NO / EN pill in the header and chat head.",
+      "html": "<div class=\"ds-lang\"><span class=\"is-on\">NO</span><span>EN</span></div>",
+      "css": ".ds-lang { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid rgba(42,24,16,0.12); border-radius: 999px; background: #fff; } .ds-lang span { font: 700 12px 'Source Sans 3', sans-serif; letter-spacing: 0.04em; padding: 5px 9px; border-radius: 999px; color: #5a4036; } .ds-lang .is-on { background: #2a1810; color: #fbf4ec; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Warm Shop Counter",
+    "overview": "Glimty should feel like a small Oslo gift counter at four in the afternoon: cream paper, coral enamel, and a serif that belongs on a shop front rather than a SaaS dashboard. The assistant is the person behind the counter, not a floating chatbot skin.\n\nDensity is editorial, not packed. Pages breathe with a single cream field; cards are paper on that field, not glass. The coral mark is scarce — logo, primary action, price — so the rest of the room can stay quiet.",
+    "keyCharacteristics": [
+      "Cream paper field, warm brown ink, one coral voice",
+      "Fraunces for names and display; Source Sans 3 for reading and controls",
+      "Pill buttons, softly rounded paper cards, no hard offset shadows",
+      "Chat is the same room as the shop, not a blue messenger pane"
+    ],
+    "rules": [
+      { "name": "The One Coral Rule", "body": "Coral appears on the mark, the primary button, the price, and focus. It is not a wash behind large text blocks.", "section": "colors" },
+      { "name": "The No Messenger Blue Rule", "body": "Assistant UI uses ink, cream, and coral. #2f6dff and cool chip blues are defects, not tokens.", "section": "colors" },
+      { "name": "The Heading Speaks Rule", "body": "No eyebrow, kicker, or uppercase label stacked above an h1/h2.", "section": "typography" },
+      { "name": "The Flat-at-Rest Rule", "body": "Surfaces sit on the cream. Shadow answers hover or a floating tool.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Fraunces for names and Source Sans 3 for reading.",
+      "Do tint supporting text from ink (#5a4036), never gray.",
+      "Do put coral on the action, the price, and the mark.",
+      "Do theme selection, scrollbars, caret, and focus from this palette.",
+      "Do write Norwegian first; English is the same layout, not a different skin."
+    ],
+    "donts": [
+      "Don't put a kicker or uppercase eyebrow above a heading.",
+      "Don't use Messenger blue, purple gradients, or Inter as the voice of the page.",
+      "Don't nest cards inside cards, or stripe a card with a thick side border.",
+      "Don't invent testimonials, partner logos, or stock photography outside public/images/gifts/.",
+      "Don't treat emoji or random Unicode as the icon set."
+    ]
+  }
+}

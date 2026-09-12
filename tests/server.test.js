@@ -47,6 +47,8 @@ describe('http api', () => {
     assert.match(String(res.body), /gaveassistent/i);
     assert.match(String(res.body), /lang="nb"/);
     assert.doesNotMatch(String(res.body), /messenger.com|Facebook Webhook/i);
+    assert.match(String(res.body), /skip-link/);
+    assert.doesNotMatch(String(res.body), /class="eyebrow"/);
   });
 
   it('serves the marketing page in English when asked', async () => {
