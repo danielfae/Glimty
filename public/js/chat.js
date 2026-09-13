@@ -83,17 +83,23 @@
 
   function giftCard(gift) {
     const photo = gift.image
-      ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="">`
+      ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="${escapeHtml(gift.name)}">`
       : '<span class="swatch" aria-hidden="true"></span>';
+    const openLabel = ui().chat_open_gift || 'Open';
     return `
-      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="choose:${escapeHtml(gift.id)}">
-        ${photo}
-        <span>
-          <b>${escapeHtml(gift.name)}</b>
-          <small>${escapeHtml(gift.why || gift.blurb)}</small>
-        </span>
-        <span class="price">$${gift.price}</span>
-      </a>
+      <div class="gift-pick">
+        <button type="button" class="gift-pick-choose" data-payload="choose:${escapeHtml(gift.id)}">
+          ${photo}
+          <span>
+            <b>${escapeHtml(gift.name)}</b>
+            <small>${escapeHtml(gift.why || gift.blurb)}</small>
+          </span>
+          <span class="price">$${gift.price}</span>
+        </button>
+        <a class="gift-pick-open" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="open:${escapeHtml(gift.id)}" aria-label="${escapeHtml(openLabel)}: ${escapeHtml(gift.name)}">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 17L17 7M10 7h7v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     `;
   }
 
@@ -115,8 +121,11 @@
     if (!pack) return;
     if (window.GLIMTY) window.GLIMTY.ui = { ...window.GLIMTY.ui, ...pack };
     const input = root.querySelector('input[name="message"]');
-    if (input && pack.assistant_placeholder) {
-      input.placeholder = pack.widget_placeholder || pack.assistant_placeholder;
+    if (input && !input.dataset.lockPlaceholder) {
+      const next = pack.widget_placeholder || pack.assistant_placeholder;
+      if (next) input.placeholder = next;
+    } else if (input && pack.assistant_placeholder) {
+      input.placeholder = pack.assistant_placeholder;
     }
     const send = root.querySelector('.composer button[type="submit"]');
     if (send && pack.assistant_send) send.textContent = pack.assistant_send;
@@ -135,6 +144,8 @@
     const storageKey = options.storageKey || 'glimty.session';
     let sessionId = window.localStorage.getItem(storageKey) || '';
     let sending = false;
+    const sendBtn = form?.querySelector('button[type="submit"]');
+    const idleLabel = sendBtn?.textContent || '';
 
     function append(messages, asUserText, replace) {
       if (replace) transcript.innerHTML = '';
@@ -149,9 +160,18 @@
       else transcript.scrollTop = transcript.scrollHeight;
     }
 
+    function setBusy(on) {
+      sending = on;
+      if (sendBtn) {
+        sendBtn.disabled = on;
+        sendBtn.textContent = on ? (ui().chat_sending || idleLabel) : idleLabel;
+      }
+      root.setAttribute('aria-busy', on ? 'true' : 'false');
+    }
+
     async function send({ message, payload, silent, replace }) {
       if (sending) return;
-      sending = true;
+      setBusy(true);
       try {
         const result = await apiChat({ sessionId, message, payload });
         sessionId = result.session.id;
@@ -165,7 +185,7 @@
       } catch (err) {
         append([{ role: 'assistant', text: err.message || ui().chat_error || 'Error' }]);
       } finally {
-        sending = false;
+        setBusy(false);
         input?.focus();
       }
     }
@@ -195,7 +215,7 @@
         window.location.href = `/gift/${encodeURIComponent(giftId)}?lang=${currentLocale()}`;
         return;
       }
-      const title = button.textContent.trim();
+      const title = (button.querySelector('b')?.textContent || button.textContent).trim();
       const last = document.createElement('article');
       last.className = 'msg user';
       last.textContent = title;
@@ -211,7 +231,11 @@
       send({ message });
     });
 
-    send({ silent: true, replace: true });
+    const boot = send({ silent: true, replace: true });
+    const pendingGift = new URLSearchParams(window.location.search).get('gift');
+    if (pendingGift && /^[a-z0-9-]+$/i.test(pendingGift)) {
+      boot.then(() => send({ payload: `choose:${pendingGift}` }));
+    }
     return {
       send,
       reset: () => { window.localStorage.removeItem(storageKey); sessionId = ''; }

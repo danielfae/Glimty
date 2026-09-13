@@ -32,4 +32,12 @@ describe('inventory', () => {
     assert.ok(inventory.getByCategory('drinkware').length >= 5);
     assert.ok(inventory.getGift('almere').sourceUrl.includes('you.no'));
   });
+
+  it('features one gift from each category first', () => {
+    const featured = inventory.featuredByCategory('en', 6);
+    const cats = featured.map((gift) => gift.category);
+    assert.equal(new Set(cats).size, cats.length);
+    assert.ok(cats.includes('drinkware'));
+    assert.ok(cats.some((id) => id !== 'drinkware'));
+  });
 });

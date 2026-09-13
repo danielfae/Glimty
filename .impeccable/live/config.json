@@ -1,0 +1,6 @@
+{
+  "files": ["lib/pages.js"],
+  "insertBefore": "</body>",
+  "commentSyntax": "html",
+  "cspChecked": true
+}
