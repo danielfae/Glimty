@@ -142,7 +142,7 @@ A warm paper palette with one enamel accent. No cool gray, no purple, no Faceboo
 
 ### Hierarchy
 
-- **Display** (weight 560, `clamp(46px, 8vw, 88px)`, line-height 0.95): the home wordmark hero only.
+- **Display** (weight 560, `clamp(40px, 6vw, 68px)`, line-height 0.95): the home promise headline only. The wordmark lives in the header.
 - **Headline** (weight 600, `clamp(32px, 5vw, 48px)`): section and product titles.
 - **Title** (weight 600, 26px): card and category names.
 - **Body** (400, 18px / 1.55): reading copy. Keep measure near 58–75ch.
