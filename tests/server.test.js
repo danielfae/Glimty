@@ -49,6 +49,8 @@ describe('http api', () => {
     assert.doesNotMatch(String(res.body), /messenger.com|Facebook Webhook/i);
     assert.match(String(res.body), /skip-link/);
     assert.doesNotMatch(String(res.body), /class="eyebrow"/);
+    assert.match(String(res.body), /Hver gang du trenger en gave/);
+    assert.match(String(res.body), /id="featured"/);
   });
 
   it('serves the marketing page in English when asked', async () => {
@@ -87,6 +89,7 @@ describe('http api', () => {
     assert.match(String(product.body), /Almere flaske i resirkulert stål/);
     assert.match(String(product.body), /\/images\/gifts\/5307-almere\.jpg/);
     assert.match(String(product.body), /you\.no/);
+    assert.match(String(product.body), /gift=almere/);
   });
 
   it('opens a chat session and continues it', async () => {
