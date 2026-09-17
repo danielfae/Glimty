@@ -75,6 +75,10 @@ app.get('/assistant', (req, res) => {
   res.type('html').send(pages.assistantPage(req.locale));
 });
 
+app.get('/business', (req, res) => {
+  res.type('html').send(pages.businessPage(req.locale));
+});
+
 app.get('/shop', (req, res) => {
   res.type('html').send(pages.shopPage(undefined, req.locale));
 });

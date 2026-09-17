@@ -46,6 +46,10 @@ describe('http api', () => {
     assert.match(String(res.body), /Glimty/);
     assert.match(String(res.body), /gaveassistent/i);
     assert.match(String(res.body), /lang="nb"/);
+    assert.match(String(res.body), /audience-switch/);
+    assert.match(String(res.body), /Privat/);
+    assert.match(String(res.body), /Bedrift/);
+    assert.match(String(res.body), /href="\/business\?lang=nb"/);
     assert.doesNotMatch(String(res.body), /messenger.com|Facebook Webhook/i);
   });
 
@@ -54,6 +58,16 @@ describe('http api', () => {
     assert.equal(res.status, 200);
     assert.match(String(res.body), /gift assistant/i);
     assert.match(String(res.body), /lang="en"/);
+    assert.match(String(res.body), /Personal/);
+    assert.match(String(res.body), /Business/);
+  });
+
+  it('serves the business gifts page', async () => {
+    const res = await request('GET', '/business');
+    assert.equal(res.status, 200);
+    assert.match(String(res.body), /Firmagaver|Merch og gaver/i);
+    assert.match(String(res.body), /audience-switch/);
+    assert.match(String(res.body), /class="is-on" href="\/business\?lang=nb"/);
   });
 
   it('serves the full assistant page', async () => {
@@ -73,7 +87,7 @@ describe('http api', () => {
   it('serves the shop and a product page with the you.no photo', async () => {
     const shop = await request('GET', '/shop');
     assert.equal(shop.status, 200);
-    assert.match(String(shop.body), /Butikken/);
+    assert.match(String(shop.body), /Katalogen/);
     assert.match(String(shop.body), /Drikke/);
 
     const drinkware = await request('GET', '/shop/drinkware');

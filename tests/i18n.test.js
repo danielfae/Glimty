@@ -10,8 +10,10 @@ describe('i18n', () => {
     assert.equal(i18n.DEFAULT_LOCALE, 'nb');
     assert.equal(i18n.normalizeLocale('no'), 'nb');
     assert.equal(i18n.normalizeLocale('en-US'), 'en');
-    assert.match(i18n.t('nb', 'nav_shop'), /Butikk/);
-    assert.match(i18n.t('en', 'nav_shop'), /Shop/);
+    assert.match(i18n.t('nb', 'nav_shop'), /Katalog/);
+    assert.match(i18n.t('en', 'nav_shop'), /Catalog/);
+    assert.match(i18n.t('nb', 'nav_business'), /Bedrift/);
+    assert.match(i18n.t('en', 'nav_private'), /Personal/);
   });
 
   it('localizes every gift into Norwegian', () => {
