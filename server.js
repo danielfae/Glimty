@@ -12,6 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.disable('x-powered-by');
+// Behind the host's proxy, so canonical and share URLs come out as https.
+app.set('trust proxy', 1);
 app.use(compression());
 app.use(express.json({ limit: '32kb' }));
 
@@ -91,7 +93,7 @@ app.get('/shop/:category', (req, res) => {
 });
 
 app.get('/gift/:id', (req, res) => {
-  const html = pages.productPage(req.params.id, req.locale);
+  const html = pages.productPage(req.params.id, req.locale, `${req.protocol}://${req.get('host')}`);
   if (!html) return res.status(404).type('html').send(pages.notFoundPage(req.locale));
   res.type('html').send(html);
 });

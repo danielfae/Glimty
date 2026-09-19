@@ -85,6 +85,12 @@ describe('http api', () => {
     assert.match(String(product.body), /Almere flaske i resirkulert stål/);
     assert.match(String(product.body), /\/images\/gifts\/5307-almere\.jpg/);
     assert.match(String(product.body), /you\.no/);
+
+    const data = JSON.parse(String(product.body).match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+    assert.equal(data['@type'], 'Product');
+    assert.equal(data.offers.price, 38);
+    assert.match(data.image, /^http.*5307-almere\.jpg$/);
+    assert.match(String(product.body), /property="og:image" content="http/);
   });
 
   it('searches and sorts the shop', async () => {
