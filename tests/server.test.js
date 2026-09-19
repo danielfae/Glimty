@@ -108,6 +108,13 @@ describe('http api', () => {
     assert.deepEqual(prices, [...prices].sort((a, b) => a - b));
   });
 
+  it('renders gift cards for the recently-viewed row', async () => {
+    const res = await request('GET', '/fragments/gifts?ids=almere,nope,%3Cx%3E,bree');
+    assert.equal(res.status, 200);
+    assert.equal((String(res.body).match(/class="gift"/g) || []).length, 2);
+    assert.doesNotMatch(String(res.body), /<x>/);
+  });
+
   it('hands a product over to the assistant and ignores unknown gifts', async () => {
     const product = await request('GET', '/gift/almere');
     assert.match(String(product.body), /\/assistant\?lang=nb&gift=almere/);

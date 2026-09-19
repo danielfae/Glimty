@@ -71,6 +71,11 @@ app.post('/api/chat', (req, res) => {
   res.json({ ...result, ui: i18n.uiPack(result.session.locale) });
 });
 
+app.get('/fragments/gifts', (req, res) => {
+  const ids = String(req.query.ids || '').split(',').slice(0, 8);
+  res.type('html').send(pages.giftCards(ids, req.locale));
+});
+
 app.get('/assistant', (req, res) => {
   res.type('html').send(pages.assistantPage(req.locale, typeof req.query.gift === 'string' ? req.query.gift : undefined));
 });
