@@ -14,13 +14,14 @@
   --shadow: 0 18px 50px rgba(42, 24, 16, 0.12);
   --shadow-soft: 0 6px 24px rgba(42, 24, 16, 0.07);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --header-h: 80px;
   --radius: 22px;
   --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
 body {
   margin: 0;
   color: var(--ink);
@@ -67,7 +68,7 @@ main:focus { outline: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 0;
+  min-height: var(--header-h);
   background: color-mix(in srgb, var(--cream) 92%, transparent);
   backdrop-filter: blur(14px);
 }
@@ -295,7 +296,7 @@ nav { display: flex; gap: 22px; align-items: center; }
 .shop-head .intro { margin-bottom: 24px; }
 .shop-bar {
   position: sticky;
-  top: 66px;
+  top: var(--header-h);
   z-index: 10;
   display: flex;
   align-items: center;
@@ -497,7 +498,7 @@ nav { display: flex; gap: 22px; align-items: center; }
 
 .buybox {
   position: sticky;
-  top: 96px;
+  top: calc(var(--header-h) + 16px);
   display: grid;
   gap: 12px;
   padding: 28px;
@@ -795,7 +796,7 @@ footer nav a:hover { color: var(--ink); text-decoration: underline; }
 .assistant-page .assistant-shell {
   width: min(760px, 100%);
   margin: 0 auto;
-  height: calc(100dvh - 72px);
+  height: calc(100dvh - var(--header-h));
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -844,6 +845,7 @@ footer nav a:hover { color: var(--ink); text-decoration: underline; }
 }
 
 @media (max-width: 860px) {
+  :root { --header-h: 64px; }
   nav .hide-sm { display: none; }
   .site-header nav { gap: 12px; }
   .wrap { width: calc(100% - 32px); }
@@ -883,7 +885,7 @@ footer nav a:hover { color: var(--ink); text-decoration: underline; }
   .buybar strong { font-size: 20px; font-variant-numeric: tabular-nums; }
   .buybar small { font-size: 13px; }
   .product ~ footer, body:has(.buybar) footer { padding-bottom: 110px; }
-  .assistant-page .assistant-shell { height: calc(100dvh - 66px); }
+
   .assistant-page .gift-row { grid-template-columns: 1fr; }
   .assistant-page .gift-pick { grid-template-columns: 96px 1fr auto; grid-template-areas: "photo text price"; align-items: center; padding: 8px; }
   .assistant-page .msg { max-width: 94%; }
