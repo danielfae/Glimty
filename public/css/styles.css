@@ -400,6 +400,43 @@ nav { display: flex; gap: 22px; align-items: center; }
 .shop-help h3 { margin: 0 0 8px; font-family: var(--font-serif); font-size: 28px; line-height: 1.15; letter-spacing: -0.02em; }
 .shop-help p { margin: 0 0 20px; max-width: 36ch; color: rgba(251, 244, 236, 0.8); }
 
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(520px, 100%);
+  margin: 0 0 20px;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  color: var(--ink-soft);
+  transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.search:focus-within { border-color: var(--coral-deep); box-shadow: var(--shadow-soft); }
+.search svg { width: 18px; height: 18px; flex: none; }
+.search input[type="search"] {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 8px 4px;
+  color: var(--ink);
+  font-size: 16px;
+}
+.search input[type="search"]:focus-visible { outline: none; }
+.search input::placeholder, .composer input::placeholder { color: #7a6358; }
+.search .btn { padding: 9px 18px; font-size: 15px; }
+.shop-empty, .lost { padding: 56px 0 40px; max-width: 560px; }
+.shop-empty h2, .lost h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+.shop-empty p, .lost p { color: var(--ink-soft); margin: 0 0 24px; }
+
 /* Product page */
 .product { padding: 20px 0 48px; }
 .crumbs { gap: 8px; margin: 0 0 16px; font-size: 15px; color: var(--ink-soft); }

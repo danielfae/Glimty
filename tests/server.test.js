@@ -87,6 +87,31 @@ describe('http api', () => {
     assert.match(String(product.body), /you\.no/);
   });
 
+  it('searches and sorts the shop', async () => {
+    const hits = await request('GET', '/shop?q=georg+jensen');
+    assert.equal(hits.status, 200);
+    assert.match(String(hits.body), /Sky termokopp/);
+    assert.doesNotMatch(String(hits.body), /Almere/);
+
+    const none = await request('GET', '/shop?q=xyzzy');
+    assert.equal(none.status, 200);
+    assert.match(String(none.body), /Ingen gaver passer/);
+
+    const sorted = String((await request('GET', '/shop?sort=price-asc')).body);
+    const prices = [...sorted.matchAll(/class="price">\$(\d+)/g)].map((m) => Number(m[1]));
+    assert.ok(prices.length >= 25);
+    assert.deepEqual(prices, [...prices].sort((a, b) => a - b));
+  });
+
+  it('hands a product over to the assistant and ignores unknown gifts', async () => {
+    const product = await request('GET', '/gift/almere');
+    assert.match(String(product.body), /\/assistant\?lang=nb&gift=almere/);
+    const handed = await request('GET', '/assistant?gift=almere');
+    assert.match(String(handed.body), /initialGift: \{"id":"almere"/);
+    const unknown = await request('GET', '/assistant?gift=%3Cscript%3E');
+    assert.match(String(unknown.body), /initialGift: null/);
+  });
+
   it('opens a chat session and continues it', async () => {
     const start = await request('POST', '/api/chat', {});
     assert.equal(start.status, 200);

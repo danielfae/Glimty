@@ -76,13 +76,13 @@ app.get('/assistant', (req, res) => {
 });
 
 app.get('/shop', (req, res) => {
-  res.type('html').send(pages.shopPage(undefined, req.locale, req.query.sort));
+  res.type('html').send(pages.shopPage(undefined, req.locale, req.query.sort, req.query.q));
 });
 
 app.get('/shop/:category', (req, res) => {
   const known = catalog.listCategories().some((cat) => cat.id === req.params.category);
   if (!known) return res.status(404).type('html').send(pages.notFoundPage(req.locale));
-  res.type('html').send(pages.shopPage(req.params.category, req.locale, req.query.sort));
+  res.type('html').send(pages.shopPage(req.params.category, req.locale, req.query.sort, req.query.q));
 });
 
 app.get('/gift/:id', (req, res) => {
