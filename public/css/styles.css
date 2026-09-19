@@ -323,6 +323,9 @@ nav { display: flex; gap: 22px; align-items: center; }
   white-space: nowrap;
   transition: background 200ms var(--ease), border-color 200ms var(--ease);
 }
+.filters-budget { order: 3; width: 100%; }
+.filter-budget { background: transparent; font-weight: 400; padding: 6px 12px; font-size: 14px; }
+.filter.is-empty { opacity: 0.45; }
 .filter span { font-weight: 400; font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .filter:hover { border-color: var(--ink-soft); background: white; }
 .filter.is-on { background: var(--ink); border-color: var(--ink); color: var(--cream); }
@@ -854,10 +857,10 @@ footer nav a:hover { color: var(--ink); text-decoration: underline; }
   .hero-photos img:nth-child(n) { transform: none; }
   .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
   .shop-help { padding: 24px; }
-  .shop-bar { top: 62px; margin-left: -16px; margin-right: -16px; padding: 10px 16px; }
+  .shop-bar { position: static; margin-left: -16px; margin-right: -16px; padding: 10px 16px; }
   .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 2px 16px; scrollbar-width: none; max-width: calc(100% + 32px); }
   .filters::-webkit-scrollbar { display: none; }
-  .sort { width: 100%; justify-content: space-between; font-size: 14px; }
+  .sort { width: 100%; justify-content: space-between; font-size: 14px; order: 4; }
   .product-photo { border-radius: 16px; }
   .product-grid { margin-top: 24px; }
   .buybox { position: static; padding: 22px; }

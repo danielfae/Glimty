@@ -97,6 +97,11 @@ describe('http api', () => {
     assert.equal(none.status, 200);
     assert.match(String(none.body), /Ingen gaver passer/);
 
+    const modest = String((await request('GET', '/shop?budget=modest')).body);
+    const modestPrices = [...modest.matchAll(/class="price">\$(\d+)/g)].map((m) => Number(m[1]));
+    assert.ok(modestPrices.length > 0 && modestPrices.every((price) => price < 40));
+    assert.equal((await request('GET', '/shop?budget=__proto__')).status, 200);
+
     const sorted = String((await request('GET', '/shop?sort=price-asc')).body);
     const prices = [...sorted.matchAll(/class="price">\$(\d+)/g)].map((m) => Number(m[1]));
     assert.ok(prices.length >= 25);
