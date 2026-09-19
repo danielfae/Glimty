@@ -72,7 +72,7 @@ app.post('/api/chat', (req, res) => {
 });
 
 app.get('/assistant', (req, res) => {
-  res.type('html').send(pages.assistantPage(req.locale));
+  res.type('html').send(pages.assistantPage(req.locale, typeof req.query.gift === 'string' ? req.query.gift : undefined));
 });
 
 app.get('/shop', (req, res) => {

@@ -569,7 +569,9 @@ footer {
 .icon-btn {
   width: 36px; height: 36px; border-radius: 50%;
   border: 1px solid var(--line); background: white; cursor: pointer;
+  display: inline-grid; place-items: center; color: var(--ink); text-decoration: none;
 }
+.icon-btn svg { width: 16px; height: 16px; }
 
 .transcript {
   flex: 1;
@@ -586,8 +588,8 @@ footer {
   max-width: 92%;
   padding: 12px 14px;
   border-radius: 16px;
-  white-space: pre-wrap;
 }
+.msg > div:first-child { white-space: pre-wrap; }
 .msg.assistant {
   align-self: flex-start;
   background: white;
@@ -683,6 +685,72 @@ footer {
   clip: rect(0 0 0 0);
 }
 
+
+/* Chat states */
+.msg.typing { display: inline-flex; gap: 5px; padding: 16px 16px; }
+.msg.typing i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-soft);
+  animation: typing 1.1s var(--ease) infinite;
+}
+.msg.typing i:nth-child(2) { animation-delay: 0.15s; }
+.msg.typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing { 0%, 60%, 100% { opacity: 0.25; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+.composer button:disabled { opacity: 0.55; cursor: default; transform: none; }
+.composer input:focus-visible { outline-offset: 0; border-color: transparent; }
+.brief:empty { display: none; }
+.gift-pick { transition: border-color 200ms var(--ease), background 200ms var(--ease); }
+.gift-pick:hover { background: white; }
+
+/* Full assistant page: a centred conversation, not a boxed widget */
+.assistant-page .site-header .lang-switch, .assistant-page .chat-head a.icon-btn { display: none; }
+.assistant-page footer { display: none; }
+.assistant-page .assistant-shell {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  height: calc(100dvh - 72px);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
+}
+.assistant-page .chat-head { background: transparent; padding: 12px 0; }
+.assistant-page .chat-head strong { font-size: 28px; letter-spacing: -0.02em; }
+.assistant-page .chat-head span { font-size: 15px; }
+.assistant-page .brief { padding: 12px 0 0; }
+.assistant-page .transcript { background: transparent; padding: 24px 0 16px; gap: 14px; scrollbar-width: thin; scrollbar-color: var(--sand) transparent; }
+.assistant-page .msg { max-width: 86%; padding: 14px 18px; border-radius: 20px; }
+.assistant-page .msg.user { border-bottom-right-radius: 6px; }
+.assistant-page .msg.assistant { border-bottom-left-radius: 6px; background: var(--paper); }
+.assistant-page .msg.assistant:has(.gift-row) { max-width: 100%; width: 100%; }
+.assistant-page .gift-row { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 14px; }
+.assistant-page .gift-pick {
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "photo photo" "text price";
+  align-items: start;
+  gap: 10px 12px;
+  padding: 10px 10px 14px;
+  border-radius: 16px;
+  background: white;
+}
+.assistant-page .gift-pick .swatch { grid-area: photo; width: 100%; height: auto; aspect-ratio: 4 / 3; border-radius: 10px; }
+.assistant-page .gift-pick > span:not(.price) { grid-area: text; }
+.assistant-page .gift-pick .price { grid-area: price; margin: 0; }
+.assistant-page .gift-pick b { font-size: 16px; line-height: 1.3; margin-bottom: 2px; }
+.assistant-page .gift-pick small { font-size: 14px; line-height: 1.4; -webkit-line-clamp: 3; }
+.assistant-page .composer {
+  margin-bottom: 20px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  box-shadow: var(--shadow-soft);
+}
+.assistant-page .composer input { border: 0; background: transparent; padding: 10px 14px; }
+.assistant-page .composer:focus-within { border-color: var(--coral-deep); }
+.assistant-page .composer input:focus-visible { outline: none; }
+
 @media (max-width: 1040px) {
   .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .product-grid { grid-template-columns: minmax(0, 1fr) 320px; gap: 32px; }
@@ -727,6 +795,10 @@ footer {
   .buybar strong { font-size: 20px; font-variant-numeric: tabular-nums; }
   .buybar small { font-size: 13px; }
   .product ~ footer, body:has(.buybar) footer { padding-bottom: 110px; }
+  .assistant-page .assistant-shell { height: calc(100dvh - 66px); }
+  .assistant-page .gift-row { grid-template-columns: 1fr; }
+  .assistant-page .gift-pick { grid-template-columns: 96px 1fr auto; grid-template-areas: "photo text price"; align-items: center; padding: 8px; }
+  .assistant-page .msg { max-width: 94%; }
 }
 
 @media (max-width: 480px) {

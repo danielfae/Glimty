@@ -86,7 +86,7 @@
       ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="">`
       : '<span class="swatch" aria-hidden="true"></span>';
     return `
-      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="choose:${escapeHtml(gift.id)}">
+      <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="choose:${escapeHtml(gift.id)}" data-title="${escapeHtml(gift.name)}">
         ${photo}
         <span>
           <b>${escapeHtml(gift.name)}</b>
@@ -104,7 +104,7 @@
     const gifts = (msg.gifts || []).map(giftCard).join('');
     return `
       <article class="msg ${msg.role}">
-        <div>${escapeHtml(msg.text || '')}</div>
+        <div>${escapeHtml((msg.text || '').trim())}</div>
         ${gifts ? `<div class="gift-row">${gifts}</div>` : ''}
         ${buttons ? `<div class="replies">${buttons}</div>` : ''}
       </article>
@@ -132,6 +132,7 @@
     const brief = root.querySelector('[data-brief]');
     const form = root.querySelector('[data-composer]');
     const input = form?.querySelector('input');
+    const submit = form?.querySelector('button[type="submit"]');
     const storageKey = options.storageKey || 'glimty.session';
     let sessionId = window.localStorage.getItem(storageKey) || '';
     let sending = false;
@@ -149,11 +150,22 @@
       else transcript.scrollTop = transcript.scrollHeight;
     }
 
+    function setPending(on) {
+      root.classList.toggle('is-sending', on);
+      if (submit) submit.disabled = on;
+      transcript.querySelector('.msg.typing')?.remove();
+      if (!on) return;
+      transcript.insertAdjacentHTML('beforeend', '<article class="msg assistant typing" aria-hidden="true"><i></i><i></i><i></i></article>');
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
     async function send({ message, payload, silent, replace }) {
       if (sending) return;
       sending = true;
+      setPending(true);
       try {
         const result = await apiChat({ sessionId, message, payload });
+        setPending(false);
         sessionId = result.session.id;
         window.localStorage.setItem(storageKey, sessionId);
         if (result.session.locale) setLocaleCookie(result.session.locale);
@@ -163,6 +175,7 @@
         else if (result.messages.length) append(result.messages, '', replace);
         return result;
       } catch (err) {
+        setPending(false);
         append([{ role: 'assistant', text: err.message || ui().chat_error || 'Error' }]);
       } finally {
         sending = false;
@@ -195,7 +208,7 @@
         window.location.href = `/gift/${encodeURIComponent(giftId)}?lang=${currentLocale()}`;
         return;
       }
-      const title = button.textContent.trim();
+      const title = button.getAttribute('data-title') || button.textContent.trim();
       const last = document.createElement('article');
       last.className = 'msg user';
       last.textContent = title;
@@ -211,7 +224,12 @@
       send({ message });
     });
 
-    send({ silent: true, replace: true });
+    // Restore the conversation first; a gift handed over from a product page continues it.
+    send({ silent: true, replace: true }).then(() => {
+      if (!options.initialGift) return;
+      transcript.insertAdjacentHTML('beforeend', messageHtml({ role: 'user', text: options.initialGift.name }));
+      send({ payload: `choose:${options.initialGift.id}` });
+    });
     return {
       send,
       reset: () => { window.localStorage.removeItem(storageKey); sessionId = ''; }
