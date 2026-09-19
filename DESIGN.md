@@ -4,6 +4,7 @@ description: A warm, photo-led gift shop where the assistant is the checkout.
 colors:
   ink: "#2a1810"
   ink-soft: "#5a4036"
+  ink-mute: "#7a6358"
   cream: "#fbf4ec"
   paper: "#fff8f2"
   tile: "#efe4da"
@@ -15,6 +16,11 @@ colors:
   hero: "#7a3f31"
   moss: "#3f6b4f"
   line: "rgba(42, 24, 16, 0.12)"
+  on-hero-border: "rgba(255,255,255,0.7)"
+  on-hero-hover: "rgba(255,255,255,0.12)"
+  hero-photo-shadow: "rgba(30, 12, 6, 0.35)"
+  scrim-mid: "rgba(30, 14, 8, 0.55)"
+  scrim-deep: "rgba(30, 14, 8, 0.86)"
 typography:
   display:
     fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
@@ -43,8 +49,53 @@ typography:
     fontSize: "13px"
     fontWeight: 600
     letterSpacing: "0.04em"
+  hero:
+    fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
+    fontSize: "clamp(46px, 7vw, 84px)"
+    fontWeight: 560
+    lineHeight: 0.95
+    letterSpacing: "-0.03em"
+  price-display:
+    fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
+    fontSize: "40px"
+    lineHeight: 1
+  title-sm:
+    fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
+    fontSize: "28px"
+    lineHeight: 1.15
+  card-title:
+    fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
+    fontSize: "24px"
+    lineHeight: 1.2
+  quote:
+    fontFamily: "Fraunces, Iowan Old Style, Georgia, serif"
+    fontSize: "22px"
+    lineHeight: 1.35
+  body-lg:
+    fontFamily: "Source Sans 3, Segoe UI, sans-serif"
+    fontSize: "20px"
+    lineHeight: 1.5
+  ui:
+    fontFamily: "Source Sans 3, Segoe UI, sans-serif"
+    fontSize: "16px"
+    fontWeight: 600
+  small:
+    fontFamily: "Source Sans 3, Segoe UI, sans-serif"
+    fontSize: "15px"
+    lineHeight: 1.4
+  caption:
+    fontFamily: "Source Sans 3, Segoe UI, sans-serif"
+    fontSize: "14px"
+  micro:
+    fontFamily: "Source Sans 3, Segoe UI, sans-serif"
+    fontSize: "12px"
+    fontWeight: 700
+    letterSpacing: "0.04em"
 rounded:
+  focus: "6px"
+  thumb: "10px"
   tile: "16px"
+  bubble: "20px"
   card: "22px"
   photo: "24px"
   hero: "32px"
