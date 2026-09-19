@@ -117,6 +117,7 @@ Prices and counts use `font-variant-numeric: tabular-nums`. Headings use `text-w
 - Content width is `min(1200px, 100% - 48px)`; 16px gutters under 860px.
 - The product grid is 4 columns, 3 under 1040px, 2 under 860px. Gap is 20px across, 32px down.
 - **Every catalogue photo is a 2.6:1 banner, and several are two-frame diptychs.** Tiles crop to 4:3, which is almost exactly one diptych frame. `PHOTO_FOCUS` in `lib/pages.js` sets a horizontal focal point per gift and `PHOTO_ZOOM` zooms into narrow frames. Add an entry whenever a new photo crops badly. The product page shows the photo uncropped at full width for the same reason, with the description and a sticky buy box beneath it.
+- Tiles load a 720px copy from `public/images/gifts/sm/` through `srcset`; the full 1100px file is for the product page and high-density screens. When adding a photo, add its `sm/` copy (`sips -Z 720`).
 - The shop bar (categories, budgets, count, sort) is sticky on desktop and static on phones, where category chips scroll horizontally.
 - On phones the product page gets a fixed bottom bar with price, stock and the assistant button; the chat widget becomes a full-screen sheet.
 

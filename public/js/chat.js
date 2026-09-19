@@ -83,7 +83,7 @@
 
   function giftCard(gift) {
     const photo = gift.image
-      ? `<img class="swatch" src="${escapeHtml(gift.image)}" alt="">`
+      ? `<img class="swatch" src="${escapeHtml(String(gift.image).replace('/images/gifts/', '/images/gifts/sm/'))}" alt="" loading="lazy">`
       : '<span class="swatch" aria-hidden="true"></span>';
     return `
       <a class="gift-pick" href="/gift/${escapeHtml(gift.id)}?lang=${currentLocale()}" data-payload="choose:${escapeHtml(gift.id)}" data-title="${escapeHtml(gift.name)}">

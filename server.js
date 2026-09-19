@@ -96,6 +96,7 @@ app.get('/gift/:id', (req, res) => {
   res.type('html').send(html);
 });
 
+app.use('/images', express.static(path.join(__dirname, 'public/images'), { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res) => {
