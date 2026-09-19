@@ -85,6 +85,49 @@ describe('http api', () => {
     assert.match(String(product.body), /Almere flaske i resirkulert stål/);
     assert.match(String(product.body), /\/images\/gifts\/5307-almere\.jpg/);
     assert.match(String(product.body), /you\.no/);
+
+    const data = JSON.parse(String(product.body).match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+    assert.equal(data['@type'], 'Product');
+    assert.equal(data.offers.price, 38);
+    assert.match(data.image, /^http.*5307-almere\.jpg$/);
+    assert.match(String(product.body), /property="og:image" content="http/);
+  });
+
+  it('searches and sorts the shop', async () => {
+    const hits = await request('GET', '/shop?q=georg+jensen');
+    assert.equal(hits.status, 200);
+    assert.match(String(hits.body), /Sky termokopp/);
+    assert.doesNotMatch(String(hits.body), /Almere/);
+
+    const none = await request('GET', '/shop?q=xyzzy');
+    assert.equal(none.status, 200);
+    assert.match(String(none.body), /Ingen gaver passer/);
+
+    const modest = String((await request('GET', '/shop?budget=modest')).body);
+    const modestPrices = [...modest.matchAll(/class="price">\$(\d+)/g)].map((m) => Number(m[1]));
+    assert.ok(modestPrices.length > 0 && modestPrices.every((price) => price < 40));
+    assert.equal((await request('GET', '/shop?budget=__proto__')).status, 200);
+
+    const sorted = String((await request('GET', '/shop?sort=price-asc')).body);
+    const prices = [...sorted.matchAll(/class="price">\$(\d+)/g)].map((m) => Number(m[1]));
+    assert.ok(prices.length >= 25);
+    assert.deepEqual(prices, [...prices].sort((a, b) => a - b));
+  });
+
+  it('renders gift cards for the recently-viewed row', async () => {
+    const res = await request('GET', '/fragments/gifts?ids=almere,nope,%3Cx%3E,bree');
+    assert.equal(res.status, 200);
+    assert.equal((String(res.body).match(/class="gift"/g) || []).length, 2);
+    assert.doesNotMatch(String(res.body), /<x>/);
+  });
+
+  it('hands a product over to the assistant and ignores unknown gifts', async () => {
+    const product = await request('GET', '/gift/almere');
+    assert.match(String(product.body), /\/assistant\?lang=nb&gift=almere/);
+    const handed = await request('GET', '/assistant?gift=almere');
+    assert.match(String(handed.body), /initialGift: \{"id":"almere"/);
+    const unknown = await request('GET', '/assistant?gift=%3Cscript%3E');
+    assert.match(String(unknown.body), /initialGift: null/);
   });
 
   it('opens a chat session and continues it', async () => {

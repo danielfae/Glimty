@@ -12,6 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.disable('x-powered-by');
+// Behind the host's proxy, so canonical and share URLs come out as https.
+app.set('trust proxy', 1);
 app.use(compression());
 app.use(express.json({ limit: '32kb' }));
 
@@ -71,26 +73,32 @@ app.post('/api/chat', (req, res) => {
   res.json({ ...result, ui: i18n.uiPack(result.session.locale) });
 });
 
+app.get('/fragments/gifts', (req, res) => {
+  const ids = String(req.query.ids || '').split(',').slice(0, 8);
+  res.type('html').send(pages.giftCards(ids, req.locale));
+});
+
 app.get('/assistant', (req, res) => {
-  res.type('html').send(pages.assistantPage(req.locale));
+  res.type('html').send(pages.assistantPage(req.locale, typeof req.query.gift === 'string' ? req.query.gift : undefined));
 });
 
 app.get('/shop', (req, res) => {
-  res.type('html').send(pages.shopPage(undefined, req.locale));
+  res.type('html').send(pages.shopPage(undefined, req.locale, req.query.sort, req.query.q, req.query.budget));
 });
 
 app.get('/shop/:category', (req, res) => {
   const known = catalog.listCategories().some((cat) => cat.id === req.params.category);
   if (!known) return res.status(404).type('html').send(pages.notFoundPage(req.locale));
-  res.type('html').send(pages.shopPage(req.params.category, req.locale));
+  res.type('html').send(pages.shopPage(req.params.category, req.locale, req.query.sort, req.query.q, req.query.budget));
 });
 
 app.get('/gift/:id', (req, res) => {
-  const html = pages.productPage(req.params.id, req.locale);
+  const html = pages.productPage(req.params.id, req.locale, `${req.protocol}://${req.get('host')}`);
   if (!html) return res.status(404).type('html').send(pages.notFoundPage(req.locale));
   res.type('html').send(html);
 });
 
+app.use('/images', express.static(path.join(__dirname, 'public/images'), { maxAge: '7d' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res) => {
