@@ -20,7 +20,12 @@
   function closeChat() {
     if (widget) widget.hidden = true;
     document.querySelectorAll('.chat-launch').forEach((el) => { el.hidden = false; });
+    document.querySelector('.chat-launch')?.focus();
   }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && widget && !widget.hidden) closeChat();
+  });
 
   // The nudge waits a few seconds, and stays away once dismissed.
   let nudgeSeen = false;
